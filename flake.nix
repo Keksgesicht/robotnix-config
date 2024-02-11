@@ -11,14 +11,10 @@
     self,
     robotnix,
   }@inputs: {
-    # "dailydriver" is an arbitrary user-chosen name for this particular
-    # configuration.  Change it to something meaningful for you, perhaps just
-    # the device name if you only have one of this kind of device.
     robotnixConfigurations = {
-      "dailydriver" = robotnix.lib.robotnixSystem ({ config, pkgs, ... }: {
-        # These two are required options
+      "Fairphone4" = robotnix.lib.robotnixSystem ({ config, pkgs, ... }: {
         device = "FP4";
-        flavor = "lineageos"; # "grapheneos" is another option
+        flavor = "lineageos";
 
         # buildDateTime is set by default by the flavor, and is updated when those flavors have new releases.
         # If you make new changes to your build that you want to be pushed by the OTA updater, you should set this yourself.
@@ -30,11 +26,15 @@
         # Build with ccache
         # ccache.enable = true;
       });
+
+      "Xiaomi-Redmi-Note9" = robotnix.lib.robotnixSystem ({ config, pkgs, ... }: {
+        # These two are required options
+        device = "merlinx";
+        flavor = "lineageos";
+      });
     };
 
-    # This provides a convenient output which allows you to build the image by
-    # simply running "nix build" on this flake.
-    # Build other outputs with (for example): "nix build .#robotnixConfigurations.dailydriver.ota"
-    defaultPackage.x86_64-linux = self.robotnixConfigurations."dailydriver".img;
+    # "nix build .#robotnixConfigurations.<name>.ota"
+    defaultPackage.x86_64-linux = self.robotnixConfigurations."Fairphone4".img;
   };
 }
